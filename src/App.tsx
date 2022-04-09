@@ -1,45 +1,22 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React from 'react';
+import styles from "./App.module.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HomePage, SignInPage, RegisterPage, DetailPage } from "./pages";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div className={styles.App}>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/signIn" component={SignInPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/detail/:touristRouteId" component={DetailPage} />
+          <Route render={() => <h1>404 not found 页面去火星了 ！</h1>} />
+        </Switch>
+      </BrowserRouter>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

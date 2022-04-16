@@ -1,15 +1,57 @@
-import React from "react";
-import styles from "./Header.module.css";
-import logo from "../../assets/logo.svg";
-import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
-import { GlobalOutlined } from "@ant-design/icons";
-import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
+import React from "react"
+import styles from "./Header.module.css"
+import logo from "../../assets/logo.svg"
+import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd"
+import { GlobalOutlined } from "@ant-design/icons"
+import {
+  useHistory,
+  useLocation,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom"
+import { RootState } from "../../redux/store"
+import { useSelector } from "../../redux/hooks"
+import { useDispatch } from "react-redux"
+import { Dispatch } from "redux"
+import {
+  addLanguageActionCreator,
+  changeLanguageActionCreator,
+} from "../../redux/language/languageActions"
 
+const useInitEffect = () => {
+  const history = useHistory()
+  const location = useLocation()
+  const params = useParams()
+  const match = useRouteMatch()
+  const dispatch = useDispatch()
+  return {
+    history,
+    location,
+    params,
+    match,
+    dispatch,
+  }
+}
+const useStoreEffect = (dispatch: Dispatch) => {
+  const language = useSelector((state) => state.language)
+  const languageList = useSelector((state) => state.languageList)
+  const menuClickHandler = (e: any) => {
+    console.log(e)
+    if (e.key === "new") {
+      dispatch(addLanguageActionCreator("新语言", "new_lang"))
+    } else {
+      dispatch(changeLanguageActionCreator(e.key))
+    }
+  }
+  return {
+    language,
+    languageList,
+    menuClickHandler,
+  }
+}
 export const Header: React.FC = () => {
-  const history = useHistory();
-  const location = useLocation();
-  const params = useParams();
-  const match = useRouteMatch();
+  const { history, location, params, match, dispatch } = useInitEffect()
+  const { language } = useStoreEffect(dispatch)
   return (
     <div className={styles["app-header"]}>
       {/* top-header */}
@@ -65,5 +107,5 @@ export const Header: React.FC = () => {
         <Menu.Item key="16"> 保险 </Menu.Item>
       </Menu>
     </div>
-  );
-};
+  )
+}
